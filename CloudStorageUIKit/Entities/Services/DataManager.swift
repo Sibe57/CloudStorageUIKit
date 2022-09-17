@@ -53,5 +53,9 @@ class DataManager {
             print(result)
         }
     }
+    
+    func renameFile(with originalName: String, newName: String) {
+        UserDefaults.standard.set(newName, forKey: originalName)
+    }
 }
 

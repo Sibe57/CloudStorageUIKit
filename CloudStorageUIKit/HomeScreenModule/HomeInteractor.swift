@@ -11,6 +11,7 @@ import Foundation
 protocol HomeInteractorInterface: AnyObject {
     func getListOfItem(in folder: String)
     func uploadFile(url: URL, name: String, path: String)
+    func renameFile(originalName: String, newName: String)
 }
 
 class HomeInteractor {
@@ -31,6 +32,10 @@ extension HomeInteractor: HomeInteractorInterface {
         DataManager.shared.getStorageInfo(in: folder) { [weak self] result in
             self?.presenter?.interactorDoneWithData(list: result)
         }
+    }
+    
+    func renameFile(originalName: String, newName: String) {
+        DataManager.shared.renameFile(with: originalName, newName: newName)
     }
 
 }

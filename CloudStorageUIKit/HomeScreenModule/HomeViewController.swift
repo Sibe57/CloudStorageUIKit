@@ -7,17 +7,24 @@
 //
 
 import UIKit
-import FirebaseStorage
 import MobileCoreServices
 import UniformTypeIdentifiers
 
 protocol HomeViewControllerInterface: AnyObject {
-    func reloadView()
-
+    func reloadView(showBackButton: Bool)
+    func showRenameAlert()
 }
 
 class HomeViewController: UIViewController {
     var presenter: HomePresenterInterface?
+    
+    private lazy var backChevron: UIButton = {
+        let backCevron = UIButton(type: .system)
+        backCevron.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        backCevron.addTarget(self, action: #selector(backChevronTapped), for: .touchUpInside)
+        backCevron.isHidden = true
+        return backCevron
+    }()
     
     private lazy var emailLabel: UILabel = {
         let emailLabel = UILabel()
@@ -30,6 +37,7 @@ class HomeViewController: UIViewController {
     
     private lazy var selectMediaButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setCSAppearance()
         button.setTitle("Select Media", for: .normal)
         button.addTarget(self, action: #selector(selectMediaTapped), for: .touchUpInside)
         return button
@@ -63,7 +71,7 @@ class HomeViewController: UIViewController {
         stack.addArrangedSubview(selectMediaButton)
         stack.addArrangedSubview(selectFileButton)
         stack.axis = .horizontal
-        stack.spacing = 24
+        stack.spacing = 16
         stack.distribution = .fillEqually
         return stack
     }()
@@ -79,6 +87,8 @@ class HomeViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(FileFolderCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.backgroundColor = .clear
+        collectionView.alwaysBounceVertical = true
         return collectionView
     }()
     
@@ -96,12 +106,18 @@ class HomeViewController: UIViewController {
         view.addSubview(emailLabel)
         view.addSubview(buttonStack)
         view.addSubview(collectionView)
+        view.addSubview(backChevron)
     }
     
     private func setupConstraints() {
         emailLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
             make.horizontalEdges.equalToSuperview().inset(16)
+        }
+        
+        backChevron.snp.makeConstraints { make in
+            make.centerY.equalTo(emailLabel)
+            make.left.equalToSuperview().inset(24)
         }
         
         buttonStack.snp.makeConstraints { make in
@@ -118,6 +134,8 @@ class HomeViewController: UIViewController {
     }
     
     private func showNameAlert() {
+        
+        // FireStorage dont support empty folder because of this, if user wants to create newFolder he can mark it in the file name
         let alert = UIAlertController(
             title: "Enter file name",
             message: "If you want upload file in new folder yor name must be \"newFolder/myFile\"",
@@ -144,11 +162,41 @@ class HomeViewController: UIViewController {
     @objc private func selectFileTapped() {
         self.present(documentPicker, animated: true)
     }
+    
+    @objc private func backChevronTapped() {
+        presenter?.backChevronTapped()
+    }
 }
 
 extension HomeViewController: HomeViewControllerInterface {
-    func reloadView() {
+    func reloadView(showBackButton: Bool) {
         collectionView.reloadData()
+        backChevron.isHidden = !showBackButton
+    }
+    func showRenameAlert() {
+        let alert = UIAlertController(
+            title: "Rename this file",
+            message: "Enter new file name",
+            preferredStyle: .alert)
+        alert.addTextField() {
+            $0.placeholder = "New file name"
+        }
+        
+        guard let textField = alert.textFields?.first else { return }
+
+        let alertUploadAction = UIAlertAction(title: "Rename", style: .default) { _ in
+            guard let text = textField.text, text != "" else { return }
+            let standartText = text.replacingOccurrences(of: " ", with: "")
+            print(standartText)
+            self.presenter?.renameFile(newName: standartText)
+            print("fileRenaming")
+        }
+        let alertCancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            
+        }
+        alert.addAction(alertUploadAction)
+        alert.addAction(alertCancelAction)
+        self.present(alert, animated: true)
     }
 }
 
@@ -184,6 +232,10 @@ extension HomeViewController: UICollectionViewDataSource {
         else { return UICollectionViewCell() }
         cell.configure(name: itemInfo.name, type: itemInfo.type)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.itemDidTapped(at: indexPath)
     }
     
     

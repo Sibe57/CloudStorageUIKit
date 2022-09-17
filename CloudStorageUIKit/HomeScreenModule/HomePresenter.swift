@@ -6,7 +6,7 @@
 //  Copyright © 2022 Eronin Fedor. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import FirebaseStorage
 
 protocol HomePresenterInterface: AnyObject {
@@ -24,11 +24,19 @@ protocol HomePresenterInterface: AnyObject {
     func setSelectedURL(url: URL?)
     
     func uploadingDone(with result: UploadingResult)
+    
+    func itemDidTapped(at item: IndexPath)
+    
+    func backChevronTapped()
+    
+    func renameFile(newName: String)
 }
 
 class HomePresenter {
     
     var currentPath: String = ""
+    
+    var selectedIndexOfFile: IndexPath?
     
     var selectedURLToDeviceFile: URL?
     
@@ -50,6 +58,7 @@ class HomePresenter {
 }
 
 extension HomePresenter: HomePresenterInterface {
+    
     func uploadingDone(with result: UploadingResult) {
         switch result {
         case .succes:
@@ -67,7 +76,7 @@ extension HomePresenter: HomePresenterInterface {
         
         interactor?.uploadFile(
             url: url, name: name,
-            path: currentPath + (pathComponents.count == 2 ? pathComponents.first ?? "" : "")
+            path: currentPath + "/" + (pathComponents.count == 2 ? pathComponents.first ?? "" : "")
         )
     }
     
@@ -79,7 +88,7 @@ extension HomePresenter: HomePresenterInterface {
         storageItems = []
         list.prefixes.forEach { storageItems.append(StorageItem(type: .folder, ref: $0)) }
         list.items.forEach { storageItems.append(StorageItem(type: .file, ref: $0)) }
-        view.reloadView()
+        view.reloadView(showBackButton: currentPath != "")
     }
     
     func getNumbersOfCells() -> Int {
@@ -94,5 +103,33 @@ extension HomePresenter: HomePresenterInterface {
     
     func setSelectedURL(url: URL?) {
         selectedURLToDeviceFile = url
+    }
+    
+    func itemDidTapped(at index: IndexPath) {
+        let item = storageItems[index.item]
+        switch item.type {
+            
+        case .file:
+            selectedIndexOfFile = index
+            view.showRenameAlert()
+            
+        case .folder:
+            currentPath += "/\(item.name)"
+            interactor?.getListOfItem(in: currentPath)
+        }
+    }
+    
+    func backChevronTapped() {
+        guard currentPath != "" else { return }
+        var pathComponents = currentPath.components(separatedBy: "/")
+        pathComponents.removeLast()
+        currentPath = String(pathComponents.joined())
+        interactor?.getListOfItem(in: currentPath)
+    }
+    
+    func renameFile(newName: String) {
+        guard let index = selectedIndexOfFile?.item else { return }
+        interactor?.renameFile(originalName: storageItems[index].ref.name, newName: newName)
+        view.reloadView(showBackButton: currentPath != "")
     }
 }
