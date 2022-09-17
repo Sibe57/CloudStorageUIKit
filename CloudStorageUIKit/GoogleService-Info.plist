@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1014868551603-bi7ivbbm9l5opq9ofjl3q379ksbqgiop.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1014868551603-bi7ivbbm9l5opq9ofjl3q379ksbqgiop</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCjIV6D-TcTyWjo8V2KMeCsTW4i2A1ybQ4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1014868551603</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>sibe57.CloudStorageUIKit</string>
+	<key>PROJECT_ID</key>
+	<string>eronin-local-storagemock</string>
+	<key>STORAGE_BUCKET</key>
+	<string>eronin-local-storagemock.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1014868551603:ios:abf1ff16655e72fa1c4dc6</string>
+</dict>
+</plist>
