@@ -8,7 +8,10 @@
 import FirebaseStorage
 import UIKit
 
-
+enum UploadingResult {
+    case succes
+    case failure
+}
 class DataManager {
     static let shared = DataManager()
     
@@ -17,7 +20,7 @@ class DataManager {
     private init() {}
     
     
-    func uploadFile(url: URL, name: String, in folder: String = "") {
+    func uploadFile(url: URL, name: String, in folder: String = "", completion: @escaping (UploadingResult) -> Void) {
         guard UploadDataValidator.validateFileExtension(url) && UploadDataValidator.validateFileSize(url)
         else {
             return
@@ -29,10 +32,12 @@ class DataManager {
         uploadRef.putFile(from: url, metadata: nil) { metadata, error in
             guard let metadata = metadata else {
                 if let error = error { print(error.localizedDescription) }
+                completion(.failure)
                 return
             }
             UserDefaults.standard.set(name, forKey: randomID)
             print(metadata)
+            completion(.succes)
         }
     }
     
