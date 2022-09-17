@@ -78,8 +78,7 @@ class HomeViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let itemWidth = ((view.window?.frame.width ?? 375) - (8 * 4) - 48) / 5
-        print("item\(itemWidth)")
+        let itemWidth = ((view.window?.frame.width ?? 375) - (4 * 4) - 48) / 5
         layout.itemSize = CGSize(width: itemWidth, height: itemWidth)
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8

@@ -16,10 +16,13 @@ class FileFolderCell: UICollectionViewCell {
         return image
     }()
     
-    private lazy var bottomLabel: UITextField = {
-        let bottomLabel = UITextField()
+    private lazy var bottomLabel: UILabel = {
+        let bottomLabel = UILabel()
         bottomLabel.font = UIFont.systemFont(ofSize: 13)
         bottomLabel.textAlignment = .center
+        //bottomLabel.adjustsFontSizeToFitWidth = true
+        bottomLabel.numberOfLines = 2
+        bottomLabel.lineBreakMode = .byTruncatingMiddle
         return bottomLabel
     }()
     
@@ -47,6 +50,7 @@ class FileFolderCell: UICollectionViewCell {
         bottomLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(24)
         }
     }
     
