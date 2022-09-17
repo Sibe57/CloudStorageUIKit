@@ -169,7 +169,14 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: HomeViewControllerInterface {
     func reloadView(showBackButton: Bool) {
-        collectionView.reloadData()
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn) { [self] in
+            collectionView.alpha = 0
+        } completion: { [self] _ in
+            collectionView.reloadData()
+            UIView.animate(withDuration: 0.10, delay: 0, options: .curveEaseOut) { [self] in
+                collectionView.alpha = 1
+            }
+        }
         backChevron.isHidden = !showBackButton
     }
     func showRenameAlert() {
@@ -185,7 +192,7 @@ extension HomeViewController: HomeViewControllerInterface {
 
         let alertUploadAction = UIAlertAction(title: "Rename", style: .default) { _ in
             guard let text = textField.text, text != "" else { return }
-            let standartText = text.replacingOccurrences(of: " ", with: "")
+            let standartText = text.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: ".", with: "")
             print(standartText)
             self.presenter?.renameFile(newName: standartText)
             print("fileRenaming")
