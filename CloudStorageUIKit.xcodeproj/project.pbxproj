@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0207240628D5D0C600C686A3 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0207240528D5D0C600C686A3 /* DataManager.swift */; };
+		0207240A28D5E49100C686A3 /* URLExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0207240928D5E49100C686A3 /* URLExtention.swift */; };
+		0207240C28D5E55A00C686A3 /* UploadDataValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0207240B28D5E55A00C686A3 /* UploadDataValidator.swift */; };
+		0207240E28D5ED0C00C686A3 /* UIViewShadowExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0207240D28D5ED0C00C686A3 /* UIViewShadowExtention.swift */; };
+		0207241028D5F12D00C686A3 /* FIleFolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0207240F28D5F12D00C686A3 /* FIleFolderCell.swift */; };
+		0207241528D5F65B00C686A3 /* UIButtonAppearanceExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0207241428D5F65B00C686A3 /* UIButtonAppearanceExtention.swift */; };
+		0207241728D5FBA400C686A3 /* ItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0207241628D5FBA400C686A3 /* ItemType.swift */; };
 		02C2664F28CE480400A2BE4C /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2664B28CE480400A2BE4C /* HomeInteractor.swift */; };
 		02C2665028CE480400A2BE4C /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2664C28CE480400A2BE4C /* HomeRouter.swift */; };
 		02C2665128CE480400A2BE4C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2664D28CE480400A2BE4C /* HomeViewController.swift */; };
@@ -26,6 +33,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0207240528D5D0C600C686A3 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		0207240928D5E49100C686A3 /* URLExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtention.swift; sourceTree = "<group>"; };
+		0207240B28D5E55A00C686A3 /* UploadDataValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadDataValidator.swift; sourceTree = "<group>"; };
+		0207240D28D5ED0C00C686A3 /* UIViewShadowExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewShadowExtention.swift; sourceTree = "<group>"; };
+		0207240F28D5F12D00C686A3 /* FIleFolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIleFolderCell.swift; sourceTree = "<group>"; };
+		0207241428D5F65B00C686A3 /* UIButtonAppearanceExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonAppearanceExtention.swift; sourceTree = "<group>"; };
+		0207241628D5FBA400C686A3 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
 		02C2664B28CE480400A2BE4C /* HomeInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
 		02C2664C28CE480400A2BE4C /* HomeRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		02C2664D28CE480400A2BE4C /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -57,6 +71,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0207240428D5D08A00C686A3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0207240528D5D0C600C686A3 /* DataManager.swift */,
+				0207240B28D5E55A00C686A3 /* UploadDataValidator.swift */,
+			);
+			name = Services;
+			path = Entities/Services;
+			sourceTree = "<group>";
+		};
+		0207240728D5E45F00C686A3 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0207240828D5E46900C686A3 /* Extentions */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0207240828D5E46900C686A3 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				0207240928D5E49100C686A3 /* URLExtention.swift */,
+				0207241428D5F65B00C686A3 /* UIButtonAppearanceExtention.swift */,
+				0207240D28D5ED0C00C686A3 /* UIViewShadowExtention.swift */,
+			);
+			path = Extentions;
+			sourceTree = "<group>";
+		};
+		0207241128D5F5F700C686A3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0207240F28D5F12D00C686A3 /* FIleFolderCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		02F9157628CE21F7003840F1 = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +126,8 @@
 		02F9158128CE21F7003840F1 /* CloudStorageUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				0207240728D5E45F00C686A3 /* Helpers */,
+				0207240428D5D08A00C686A3 /* Services */,
 				02F915AC28CE4519003840F1 /* HomeScreenModule */,
 				02F915A428CE2BFD003840F1 /* Entities */,
 				02F915A228CE2677003840F1 /* GoogleService-Info.plist */,
@@ -103,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				02F915A528CE2CB1003840F1 /* UserInfo.swift */,
+				0207241628D5FBA400C686A3 /* ItemType.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -118,6 +171,7 @@
 		02F915AC28CE4519003840F1 /* HomeScreenModule */ = {
 			isa = PBXGroup;
 			children = (
+				0207241128D5F5F700C686A3 /* Views */,
 				02C2664B28CE480400A2BE4C /* HomeInteractor.swift */,
 				02C2664E28CE480400A2BE4C /* HomePresenter.swift */,
 				02C2664C28CE480400A2BE4C /* HomeRouter.swift */,
@@ -211,11 +265,18 @@
 				02F915AB28CE2DF9003840F1 /* AuthViewModel.swift in Sources */,
 				02C2665228CE480400A2BE4C /* HomePresenter.swift in Sources */,
 				02F9158328CE21F7003840F1 /* AppDelegate.swift in Sources */,
+				0207240E28D5ED0C00C686A3 /* UIViewShadowExtention.swift in Sources */,
 				02F915A628CE2CB1003840F1 /* UserInfo.swift in Sources */,
+				0207240C28D5E55A00C686A3 /* UploadDataValidator.swift in Sources */,
+				0207240A28D5E49100C686A3 /* URLExtention.swift in Sources */,
 				02C2665128CE480400A2BE4C /* HomeViewController.swift in Sources */,
 				02C2665028CE480400A2BE4C /* HomeRouter.swift in Sources */,
+				0207241028D5F12D00C686A3 /* FIleFolderCell.swift in Sources */,
+				0207241528D5F65B00C686A3 /* UIButtonAppearanceExtention.swift in Sources */,
+				0207240628D5D0C600C686A3 /* DataManager.swift in Sources */,
 				02F9158528CE21F7003840F1 /* SceneDelegate.swift in Sources */,
 				02C2664F28CE480400A2BE4C /* HomeInteractor.swift in Sources */,
+				0207241728D5FBA400C686A3 /* ItemType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
