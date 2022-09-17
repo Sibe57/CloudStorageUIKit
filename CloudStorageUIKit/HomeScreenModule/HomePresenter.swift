@@ -22,7 +22,8 @@ protocol HomePresenterInterface: AnyObject {
     func tryUploadFile(with userInput: String)
     
     func setSelectedURL(url: URL?)
-
+    
+    func uploadingDone(with result: UploadingResult)
 }
 
 class HomePresenter {
@@ -49,13 +50,24 @@ class HomePresenter {
 }
 
 extension HomePresenter: HomePresenterInterface {
+    func uploadingDone(with result: UploadingResult) {
+        switch result {
+        case .succes:
+            interactor?.getListOfItem(in: currentPath)
+        case .failure:
+            print("failure")
+        }
+    }
+ 
+    
     func tryUploadFile(with userInput: String) {
         guard let url = selectedURLToDeviceFile else { return }
         let pathComponents = userInput.split(separator: "/").map { String($0) }
         guard pathComponents.count < 3, let name = pathComponents.last else { return }
-        DataManager.shared.uploadFile(
+        
+        interactor?.uploadFile(
             url: url, name: name,
-            in: currentPath + (pathComponents.count == 2 ? pathComponents.first ?? "" : "")
+            path: currentPath + (pathComponents.count == 2 ? pathComponents.first ?? "" : "")
         )
     }
     
@@ -64,6 +76,7 @@ extension HomePresenter: HomePresenterInterface {
     }
     
     func interactorDoneWithData(list: StorageListResult) {
+        storageItems = []
         list.prefixes.forEach { storageItems.append(StorageItem(type: .folder, ref: $0)) }
         list.items.forEach { storageItems.append(StorageItem(type: .file, ref: $0)) }
         view.reloadView()

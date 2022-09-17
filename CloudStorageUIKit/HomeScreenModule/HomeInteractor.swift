@@ -10,6 +10,7 @@ import Foundation
 
 protocol HomeInteractorInterface: AnyObject {
     func getListOfItem(in folder: String)
+    func uploadFile(url: URL, name: String, path: String)
 }
 
 class HomeInteractor {
@@ -17,6 +18,13 @@ class HomeInteractor {
 }
 
 extension HomeInteractor: HomeInteractorInterface {
+    
+    func uploadFile(url: URL, name: String, path: String) {
+        DataManager.shared.uploadFile(url: url, name: name, in: path) {
+            self.presenter?.uploadingDone(with: $0)
+        }
+    }
+    
     
     // leave folder arg to default to get all files from root folder
     func getListOfItem(in folder: String = "") {
