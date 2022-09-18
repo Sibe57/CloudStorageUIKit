@@ -7,11 +7,13 @@
 //
 
 import Foundation
+import FirebaseStorage
 
 protocol HomeInteractorInterface: AnyObject {
     func getListOfItem(in folder: String)
     func uploadFile(url: URL, name: String, path: String)
     func renameFile(originalName: String, newName: String)
+    func delFile(at ref: StorageReference)
 }
 
 class HomeInteractor {
@@ -36,6 +38,12 @@ extension HomeInteractor: HomeInteractorInterface {
     
     func renameFile(originalName: String, newName: String) {
         DataManager.shared.renameFile(with: originalName, newName: newName)
+    }
+    
+    func delFile(at ref: StorageReference) {
+        DataManager.shared.deliteFile(on: ref) { [weak self] in
+            self?.presenter?.deleteFileDone(with: $0)
+        }
     }
 
 }

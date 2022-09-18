@@ -76,6 +76,13 @@ class HomeViewController: UIViewController {
         return stack
     }()
     
+    private lazy var settingsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "gearshape"), for: .normal)
+        button.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let itemWidth = ((view.window?.frame.width ?? 375) - (4 * 4) - 48) / 5
@@ -106,6 +113,7 @@ class HomeViewController: UIViewController {
         view.addSubview(buttonStack)
         view.addSubview(collectionView)
         view.addSubview(backChevron)
+        view.addSubview(settingsButton)
     }
     
     private func setupConstraints() {
@@ -129,6 +137,11 @@ class HomeViewController: UIViewController {
             make.top.equalTo(emailLabel.snp.bottom).inset(-16)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(buttonStack.snp.top).inset(-16)
+        }
+        
+        settingsButton.snp.makeConstraints { make in
+            make.centerY.equalTo(emailLabel)
+            make.right.equalToSuperview().inset(24)
         }
     }
     
@@ -165,6 +178,10 @@ class HomeViewController: UIViewController {
     @objc private func backChevronTapped() {
         presenter?.backChevronTapped()
     }
+    
+    @objc private func settingsTapped() {
+        print("settings tapped")
+    }
 }
 
 extension HomeViewController: HomeViewControllerInterface {
@@ -200,8 +217,13 @@ extension HomeViewController: HomeViewControllerInterface {
         let alertCancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             
         }
+        
+        let alertDeleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.presenter?.delDidTapped()
+        }
         alert.addAction(alertUploadAction)
         alert.addAction(alertCancelAction)
+        alert.addAction(alertDeleteAction)
         self.present(alert, animated: true)
     }
 }
@@ -243,6 +265,4 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter?.itemDidTapped(at: indexPath)
     }
-    
-    
 }

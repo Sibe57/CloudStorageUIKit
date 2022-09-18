@@ -23,13 +23,17 @@ protocol HomePresenterInterface: AnyObject {
     
     func setSelectedURL(url: URL?)
     
-    func uploadingDone(with result: UploadingResult)
+    func uploadingDone(with result: RequestResult)
+    
+    func deleteFileDone(with result: RequestResult)
     
     func itemDidTapped(at item: IndexPath)
     
     func backChevronTapped()
     
     func renameFile(newName: String)
+    
+    func delDidTapped()
 }
 
 class HomePresenter {
@@ -59,7 +63,13 @@ class HomePresenter {
 
 extension HomePresenter: HomePresenterInterface {
     
-    func uploadingDone(with result: UploadingResult) {
+    func delDidTapped() {
+        guard let index = selectedIndexOfFile?.item else { return }
+        let storageRef = storageItems[index].ref
+        interactor?.delFile(at: storageRef)
+    }
+    
+    func uploadingDone(with result: RequestResult) {
         switch result {
         case .succes:
             interactor?.getListOfItem(in: currentPath)
@@ -131,5 +141,14 @@ extension HomePresenter: HomePresenterInterface {
         guard let index = selectedIndexOfFile?.item else { return }
         interactor?.renameFile(originalName: storageItems[index].ref.name, newName: newName)
         view.reloadView(showBackButton: currentPath != "")
+    }
+    
+    func deleteFileDone(with result: RequestResult) {
+        switch result {
+        case .succes:
+            interactor?.getListOfItem(in: currentPath)
+        case .failure:
+            print("failure")
+        }
     }
 }

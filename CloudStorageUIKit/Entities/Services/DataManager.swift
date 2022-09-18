@@ -8,7 +8,7 @@
 import FirebaseStorage
 import UIKit
 
-enum UploadingResult {
+enum RequestResult {
     case succes
     case failure
 }
@@ -20,7 +20,7 @@ class DataManager {
     private init() {}
     
     
-    func uploadFile(url: URL, name: String, in folder: String = "", completion: @escaping (UploadingResult) -> Void) {
+    func uploadFile(url: URL, name: String, in folder: String = "", completion: @escaping (RequestResult) -> Void) {
         guard UploadDataValidator.validateFileExtension(url) && UploadDataValidator.validateFileSize(url)
         else {
             return
@@ -51,6 +51,16 @@ class DataManager {
             }
             completion(result)
             print(result)
+        }
+    }
+    
+    func deliteFile(on ref: StorageReference, completion: @escaping (RequestResult) -> Void) {
+        ref.delete { error in
+            if let error  = error {
+                completion(.failure)
+            } else {
+                completion(.succes)
+            }
         }
     }
     
