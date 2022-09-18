@@ -6,6 +6,10 @@
 	<string>This app wants to use photos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app wants to use media.</string>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string>This app wants to use file</string>
+	<key>NSFileProviderPresenceUsageDescription</key>
+	<string>This app wants to use file</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsTabbedSceneCollection</key>

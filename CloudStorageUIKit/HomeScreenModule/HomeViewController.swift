@@ -13,6 +13,7 @@ import UniformTypeIdentifiers
 protocol HomeViewControllerInterface: AnyObject {
     func reloadView(showBackButton: Bool)
     func showRenameAlert()
+    func showErrorAlert(error: String)
 }
 
 class HomeViewController: UIViewController {
@@ -195,6 +196,7 @@ class HomeViewController: UIViewController {
 // MARK: - HomeViewControllerInterface Extention
 
 extension HomeViewController: HomeViewControllerInterface {
+    
     func reloadView(showBackButton: Bool) {
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn) { [self] in
             collectionView.alpha = 0
@@ -236,6 +238,20 @@ extension HomeViewController: HomeViewControllerInterface {
         alert.addAction(alertDeleteAction)
         self.present(alert, animated: true)
     }
+    
+    func showErrorAlert(error: String) {
+        
+        let alert = UIAlertController(
+            title: "Oh now Error",
+            message: error,
+            preferredStyle: .alert)
+       
+        let alertOkAction = UIAlertAction(title: "Ok", style: .destructive) { _ in
+            self.presenter?.setSelectedURL(url: nil)
+        }
+        alert.addAction(alertOkAction)
+        self.present(alert, animated: true)
+    }
 }
 
 // MARK: - UIImagePickerControllerDelegate Extention
@@ -246,6 +262,7 @@ extension HomeViewController: UIImagePickerControllerDelegate & UINavigationCont
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
     ) {
         guard let url = info[.imageURL] as? URL else { return }
+        print(url)
         presenter?.setSelectedURL(url: url)
         dismiss(animated: true)
         showNameAlert()
@@ -255,7 +272,12 @@ extension HomeViewController: UIImagePickerControllerDelegate & UINavigationCont
 // MARK: - UIDocumentPickerDelegate Extention
 
 extension HomeViewController: UIDocumentPickerDelegate {
-    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else { return }
+        presenter?.setSelectedURL(url: url)
+        dismiss(animated: true)
+        showNameAlert()
+    }
 }
 
 // MARK: - UICollectionViewDelegate Extention

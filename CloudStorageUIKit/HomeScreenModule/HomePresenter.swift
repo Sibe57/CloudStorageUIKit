@@ -21,7 +21,7 @@ protocol HomePresenterInterface: AnyObject {
     func itemDidTapped(at item: IndexPath)
     func delDidTapped()
     
-    func interactorDoneWithData(list: StorageListResult)
+    func interactorDoneWithData(list: StorageListResult?, result: RequestResult)
     func uploadingDone(with result: RequestResult)
     func deleteFileDone(with result: RequestResult)
 }
@@ -52,6 +52,20 @@ class HomePresenter {
 }
 
 extension HomePresenter: HomePresenterInterface {
+
+    func interactorDoneWithData(list: StorageListResult?, result: RequestResult) {
+        switch result {
+        case .succes:
+            guard let list = list else { return }
+            storageItems = []
+            list.prefixes.forEach { storageItems.append(StorageItem(type: .folder, ref: $0)) }
+            list.items.forEach { storageItems.append(StorageItem(type: .file, ref: $0)) }
+            view.reloadView(showBackButton: currentPath != "")
+        case .failure(let description):
+            view.showErrorAlert(error: description)
+        }
+    }
+    
     
     func delDidTapped() {
         guard let index = selectedIndexOfFile?.item else { return }
@@ -63,8 +77,8 @@ extension HomePresenter: HomePresenterInterface {
         switch result {
         case .succes:
             interactor?.getListOfItem(in: currentPath)
-        case .failure:
-            print("failure")
+        case .failure(let description):
+            view.showErrorAlert(error: description)
         }
     }
  
@@ -82,13 +96,6 @@ extension HomePresenter: HomePresenterInterface {
     
     func viewDidLoad() {
         interactor?.getListOfItem(in: currentPath)
-    }
-    
-    func interactorDoneWithData(list: StorageListResult) {
-        storageItems = []
-        list.prefixes.forEach { storageItems.append(StorageItem(type: .folder, ref: $0)) }
-        list.items.forEach { storageItems.append(StorageItem(type: .file, ref: $0)) }
-        view.reloadView(showBackButton: currentPath != "")
     }
     
     func getNumbersOfCells() -> Int {
@@ -137,8 +144,8 @@ extension HomePresenter: HomePresenterInterface {
         switch result {
         case .succes:
             interactor?.getListOfItem(in: currentPath)
-        case .failure:
-            print("failure")
+        case .failure(let description):
+            view.showErrorAlert(error: description)
         }
     }
 }
