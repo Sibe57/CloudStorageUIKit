@@ -36,7 +36,6 @@ class AuthViewModel {
                 print(self.user.token)
                 self.view?.goToHomeScreen()
             }
-            //self.view?.showAlert(withTitle: "Hello \(result?.user.email)")
             UserDefaults.standard.set(self.user.email ?? "", forKey: "userEmail")
         }
     }
