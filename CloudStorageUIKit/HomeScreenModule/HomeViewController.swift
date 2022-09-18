@@ -31,7 +31,6 @@ class HomeViewController: UIViewController {
         emailLabel.adjustsFontSizeToFitWidth = true
         emailLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         emailLabel.textAlignment = .center
-        emailLabel.text = "eroninf@icloud.com"
         return emailLabel
     }()
     
@@ -62,7 +61,6 @@ class HomeViewController: UIViewController {
     private lazy var mediaPicker: UIImagePickerController = {
         let picker = UIImagePickerController()
         picker.delegate = self
-        picker.allowsEditing = true
         picker.mediaTypes = ["public.image", "public.movie"]
         picker.sourceType = .photoLibrary
         picker.modalPresentationStyle = .pageSheet
@@ -101,17 +99,21 @@ class HomeViewController: UIViewController {
         return collectionView
     }()
     
+// MARK: - VC Life Cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
         presenter?.viewDidLoad()
+        emailLabel.text = UserInfo.shared.email
         navigationController?.setNavigationBarHidden(true, animated: false)
         collectionView.dataSource = self
         collectionView.delegate = self
         setupViews()
         setupConstraints()
     }
-    
+
+// MARK: - Private methods
+        
     private func setupViews() {
         view.addSubview(emailLabel)
         view.addSubview(buttonStack)
@@ -171,6 +173,8 @@ class HomeViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
+// MARK: - @objc methods
+    
     @objc private func selectMediaTapped() {
         self.present(mediaPicker, animated: true)
     }
@@ -187,6 +191,8 @@ class HomeViewController: UIViewController {
         print("settings tapped")
     }
 }
+
+// MARK: - HomeViewControllerInterface Extention
 
 extension HomeViewController: HomeViewControllerInterface {
     func reloadView(showBackButton: Bool) {
@@ -232,6 +238,8 @@ extension HomeViewController: HomeViewControllerInterface {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate Extention
+
 extension HomeViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     func imagePickerController(
         _ picker: UIImagePickerController,
@@ -244,9 +252,19 @@ extension HomeViewController: UIImagePickerControllerDelegate & UINavigationCont
     }
 }
 
+// MARK: - UIDocumentPickerDelegate Extention
+
+extension HomeViewController: UIDocumentPickerDelegate {
+    
+}
+
+// MARK: - UICollectionViewDelegate Extention
+
 extension HomeViewController: UICollectionViewDelegate {
     
 }
+
+// MARK: - UICollectionViewDataSource Extention
 
 extension HomeViewController: UICollectionViewDataSource {
     
@@ -269,8 +287,4 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter?.itemDidTapped(at: indexPath)
     }
-}
-
-extension HomeViewController: UIDocumentPickerDelegate {
-    
 }
