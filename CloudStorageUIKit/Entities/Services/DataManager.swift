@@ -10,7 +10,7 @@ import UIKit
 
 enum RequestResult {
     case succes
-    case failure
+    case failure (description: String)
 }
 class DataManager {
     static let shared = DataManager()
@@ -23,16 +23,18 @@ class DataManager {
     func uploadFile(url: URL, name: String, in folder: String = "", completion: @escaping (RequestResult) -> Void) {
         guard UploadDataValidator.validateFileExtension(url) && UploadDataValidator.validateFileSize(url)
         else {
+            completion(.failure(description: "max size limit or txt file detected"))
             return
         }
         
         let randomID = UUID().uuidString
         let uploadRef = storageRef.child(folder).child(randomID)
-        
         uploadRef.putFile(from: url, metadata: nil) { metadata, error in
             guard let metadata = metadata else {
-                if let error = error { print(error.localizedDescription) }
-                completion(.failure)
+                if let error = error {
+                    print(error.localizedDescription)
+                    completion(.failure(description: error.localizedDescription))
+                }
                 return
             }
             UserDefaults.standard.set(name, forKey: randomID)
@@ -41,24 +43,25 @@ class DataManager {
         }
     }
     
-    func getStorageInfo(in folder: String = "", completion: @escaping (StorageListResult) -> Void) {
+    func getStorageInfo(in folder: String = "", completion: @escaping (StorageListResult?, RequestResult) -> Void) {
         let storageRef = storageRef.child(folder)
-        print(UserInfo.shared.userID)
         storageRef.listAll { result, error in
             guard let result = result else {
-                if let error = error { print(error.localizedDescription) }
-                print("list error")
+                if let error = error {
+                    print(error.localizedDescription)
+                    completion(nil, .failure(description: error.localizedDescription))
+                }
                 return
             }
-            completion(result)
-            print(result)
+            completion(result, .succes)
+            print("hereee")
         }
     }
     
     func deliteFile(on ref: StorageReference, completion: @escaping (RequestResult) -> Void) {
         ref.delete { error in
             if let error  = error {
-                completion(.failure)
+                completion(.failure(description: error.localizedDescription))
             } else {
                 completion(.succes)
             }
