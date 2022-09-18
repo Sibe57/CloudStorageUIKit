@@ -18,15 +18,19 @@ class AuthViewController: UIViewController {
     
     var model: AuthViewModel?
     
+    private lazy var loginTextFieldBG: UIView = {
+        createBGView()
+    }()
+    
+    private lazy var passTextFieldBG: UIView = {
+        createBGView()
+    }()
+    
+    
     private lazy var loginTextField: UITextField = {
         let loginTextField = UITextField()
         loginTextField.placeholder = "Email"
         loginTextField.backgroundColor = .white
-        loginTextField.layer.cornerRadius = 8
-        loginTextField.layer.cornerCurve = .continuous
-        loginTextField.layer.shadowColor = UIColor.black.cgColor
-        loginTextField.layer.shadowRadius = 7
-        loginTextField.layer.shadowOpacity = 0.15
         loginTextField.keyboardType = .emailAddress
         return loginTextField
     }()
@@ -35,11 +39,6 @@ class AuthViewController: UIViewController {
         let passwordTextField = UITextField()
         passwordTextField.placeholder = "Password"
         passwordTextField.backgroundColor = .white
-        passwordTextField.layer.cornerRadius = 8
-        passwordTextField.layer.cornerCurve = .continuous
-        passwordTextField.layer.shadowColor = UIColor.black.cgColor
-        passwordTextField.layer.shadowRadius = 15
-        passwordTextField.layer.shadowOpacity = 0.15
         passwordTextField.isSecureTextEntry = true
         return passwordTextField
     }()
@@ -72,22 +71,21 @@ class AuthViewController: UIViewController {
     }
     
     private func setupView() {
-        view.addSubview(signUpButton)
-        view.addSubview(signInButton)
-        view.addSubview(loginTextField)
-        view.addSubview(passwordTextField)
+        view.addSubviews(signInButton, signUpButton, loginTextFieldBG, passTextFieldBG)
+        loginTextFieldBG.addSubview(loginTextField)
+        passTextFieldBG.addSubview(passwordTextField)
     }
     
     private func setupConstraints() {
-        loginTextField.snp.makeConstraints { make in
+        loginTextFieldBG.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(24)
             make.top.equalToSuperview().inset(160)
             make.height.equalTo(36)
         }
         
-        passwordTextField.snp.makeConstraints { make in
+        passTextFieldBG.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(24)
-            make.top.equalTo(loginTextField.snp.bottom).inset(-24)
+            make.top.equalTo(loginTextFieldBG.snp.bottom).inset(-24)
             make.height.equalTo(36)
         }
         
@@ -102,6 +100,23 @@ class AuthViewController: UIViewController {
             make.top.equalTo(signInButton.snp.bottom).inset(-16)
             make.height.equalTo(48)
         }
+        
+        loginTextField.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        passwordTextField.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
+    
+    private func createBGView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.layer.cornerCurve = .continuous
+        view.setShadow()
+        return view
     }
     
     @objc private func signInTapped() {
