@@ -11,6 +11,7 @@ import SnapKit
 protocol AuthViewControllerInterface: AnyObject {
     func showAlert(withTitle: String)
     func setEmailTextField(withText: String)
+    func goToHomeScreen()
 }
 
 class AuthViewController: UIViewController {
@@ -45,26 +46,17 @@ class AuthViewController: UIViewController {
     
     private lazy var signInButton: UIButton = {
         let signInButton = UIButton(type: .system)
-        signInButton.backgroundColor = .blue
-        signInButton.layer.cornerRadius = 16
-        signInButton.layer.cornerCurve = .continuous
+        signInButton.setCSAppearance()
         signInButton.setTitle("SING IN", for: .normal)
-        signInButton.tintColor = .white
         signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
-        signInButton.layer.shadowColor = UIColor.black.cgColor
-        signInButton.layer.shadowRadius = 15
-        signInButton.layer.shadowOpacity = 0.15
         return signInButton
     }()
     
     private lazy var signUpButton: UIButton = {
         let signUpButton = UIButton(type: .system)
-        signUpButton.backgroundColor = .green
-        signUpButton.layer.cornerRadius = 16
-        signUpButton.layer.cornerCurve = .continuous
+        signUpButton.setCSAppearance()
         signUpButton.setTitle("SING UP", for: .normal)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
-        signUpButton.tintColor = .white
         return signUpButton
     }()
     
@@ -74,9 +66,11 @@ class AuthViewController: UIViewController {
         model?.view = self
         model?.viewDidLoad()
         view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(true, animated: false)
         setupView()
         setupConstraints()
     }
+    
     private func setupView() {
         view.addSubview(signUpButton)
         view.addSubview(signInButton)
@@ -120,6 +114,10 @@ class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: AuthViewControllerInterface {
+    func goToHomeScreen() {
+        navigationController?.pushViewController(HomeRouter.setupModule(), animated: true)
+    }
+    
     func showAlert(withTitle: String) {
         let alert = UIAlertController(title: withTitle, message: nil, preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .default)

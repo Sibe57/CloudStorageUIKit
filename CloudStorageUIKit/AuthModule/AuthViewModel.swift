@@ -28,20 +28,28 @@ class AuthViewModel {
             }
             self.user.userID = result?.user.uid
             self.user.email = result?.user.email
-            self.user.getToken()
-            self.view?.showAlert(withTitle: "Hello \(result?.user.email)")
+            self.user.getToken { error in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                print(self.user.token)
+                self.view?.goToHomeScreen()
+            }
+            //self.view?.showAlert(withTitle: "Hello \(result?.user.email)")
             UserDefaults.standard.set(self.user.email ?? "", forKey: "userEmail")
         }
     }
 
     func signUp(email: String, password: String) {
-        auth.createUser(withEmail: email, password: password) { []result, error in
+        auth.createUser(withEmail: email, password: password) { result, error in
             guard error == nil else {
                 self.view?.showAlert(withTitle: error?.localizedDescription ?? "UnknownError")
                 return
             }
             print("Your Account has been successfully created")
             self.signIn(email: email, password: password)
+            self.view?.goToHomeScreen()
         }
     }
     

@@ -16,7 +16,7 @@ class DataManager {
     static let shared = DataManager()
     
     let storage = Storage.storage()
-    lazy var storageRef = storage.reference()
+    lazy var storageRef = storage.reference().child("users").child(UserInfo.shared.userID ?? "")
     private init() {}
     
     
@@ -43,10 +43,11 @@ class DataManager {
     
     func getStorageInfo(in folder: String = "", completion: @escaping (StorageListResult) -> Void) {
         let storageRef = storageRef.child(folder)
-        
+        print(UserInfo.shared.userID)
         storageRef.listAll { result, error in
             guard let result = result else {
                 if let error = error { print(error.localizedDescription) }
+                print("list error")
                 return
             }
             completion(result)

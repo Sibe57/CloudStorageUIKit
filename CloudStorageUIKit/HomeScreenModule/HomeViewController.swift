@@ -52,7 +52,10 @@ class HomeViewController: UIViewController {
     }()
     
     private lazy var documentPicker: UIDocumentPickerViewController = {
-        let documentPicker = UIDocumentPickerViewController()
+        let documentPicker = UIDocumentPickerViewController(
+            forOpeningContentTypes: [.text, .archive, .image, .audiovisualContent, .audio]
+        )
+        documentPicker.delegate = self
         return documentPicker
     }()
     
@@ -102,6 +105,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
         presenter?.viewDidLoad()
+        navigationController?.setNavigationBarHidden(true, animated: false)
         collectionView.dataSource = self
         collectionView.delegate = self
         setupViews()
@@ -265,4 +269,8 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter?.itemDidTapped(at: indexPath)
     }
+}
+
+extension HomeViewController: UIDocumentPickerDelegate {
+    
 }
