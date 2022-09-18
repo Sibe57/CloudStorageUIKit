@@ -49,7 +49,6 @@ class AuthViewModel {
             }
             print("Your Account has been successfully created")
             self.signIn(email: email, password: password)
-            self.view?.goToHomeScreen()
         }
     }
     
