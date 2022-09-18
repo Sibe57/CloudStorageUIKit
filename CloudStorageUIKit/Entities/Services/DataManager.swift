@@ -54,7 +54,6 @@ class DataManager {
                 return
             }
             completion(result, .succes)
-            print("hereee")
         }
     }
     
