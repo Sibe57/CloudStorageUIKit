@@ -12,28 +12,18 @@ import FirebaseStorage
 protocol HomePresenterInterface: AnyObject {
     
     func viewDidLoad()
-    
+    func configureCell(at index: IndexPath) -> (name: String, type: ItemType)
     func getNumbersOfCells() -> Int
+    func tryUploadFile(with userInput: String)
+    func setSelectedURL(url: URL?)
+    func backChevronTapped()
+    func renameFile(newName: String)
+    func itemDidTapped(at item: IndexPath)
+    func delDidTapped()
     
     func interactorDoneWithData(list: StorageListResult)
-    
-    func configureCell(at index: IndexPath) -> (name: String, type: ItemType)
-    
-    func tryUploadFile(with userInput: String)
-    
-    func setSelectedURL(url: URL?)
-    
     func uploadingDone(with result: RequestResult)
-    
     func deleteFileDone(with result: RequestResult)
-    
-    func itemDidTapped(at item: IndexPath)
-    
-    func backChevronTapped()
-    
-    func renameFile(newName: String)
-    
-    func delDidTapped()
 }
 
 class HomePresenter {
