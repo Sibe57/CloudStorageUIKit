@@ -28,7 +28,6 @@ extension HomeInteractor: HomeInteractorInterface {
         }
     }
     
-    
     // leave folder arg to default to get all files from root folder
     func getListOfItem(in folder: String = "") {
         DataManager.shared.getStorageInfo(in: folder) { [weak self] list, result  in
