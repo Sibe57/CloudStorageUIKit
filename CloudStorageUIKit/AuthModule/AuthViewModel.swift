@@ -33,7 +33,6 @@ class AuthViewModel {
                     print(error)
                     return
                 }
-                print(self.user.token)
                 self.view?.goToHomeScreen()
             }
             UserDefaults.standard.set(self.user.email ?? "", forKey: "userEmail")
