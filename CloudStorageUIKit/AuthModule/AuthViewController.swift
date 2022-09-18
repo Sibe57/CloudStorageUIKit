@@ -64,7 +64,7 @@ class AuthViewController: UIViewController {
         model = AuthViewModel(user: UserInfo.shared)
         model?.view = self
         model?.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
         navigationController?.setNavigationBarHidden(true, animated: false)
         setupView()
         setupConstraints()
